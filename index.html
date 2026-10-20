@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mozaïk Portail - Élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #0070cc;
+    --blue-link: #0b6bbf;
+    --pink: #c8579f;
+    --orange: #f5a53a;
+    --text: #222;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: Arial, "Liberation Sans", Helvetica, sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: #fff;
+    min-width: 823px;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--blue-link); text-decoration: none; }
+  svg { display: block; }
+
+  /* ---------- Header ---------- */
+  .header {
+    background: var(--blue);
+    height: 47px;
+    color: #fff;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0 8px;
+  }
+  .brand { display: flex; align-items: flex-start; padding-top: 5px; }
+  .brand svg { width: 24px; height: 28px; margin: 2px 8px 0 0; }
+  .brand-text { line-height: 1; }
+  .brand-text .name {
+    font-family: "Varela Round", "Nunito", "Trebuchet MS", Arial, sans-serif;
+    font-size: 25px; line-height: 26px; letter-spacing: -.2px;
+  }
+  .brand-text .name b { font-weight: 400; }
+  .brand-text .name span { font-weight: 400; color: #dcecfa; }
+  .brand-text .role { font-size: 12px; line-height: 12px; margin-top: -2px; margin-left: 1px; }
+  .user { display: flex; align-items: center; height: 100%; margin-right: 8px; }
+  .lang {
+    width: 21px; height: 21px; border-radius: 50%; background: #222d36;
+    font-size: 11px; text-align: center; line-height: 21px; margin-right: 11px;
+  }
+  .username { font-size: 15px; }
+  .username i { font-style: normal; font-size: 11px; margin-left: 3px; }
+
+  /* ---------- Tabs ---------- */
+  .tabs-wrap { padding: 0 15px 0 4px; margin-top: 12px; }
+  .tabs { display: flex; height: 39px; border-bottom: 3px solid var(--blue); }
+  .tab { height: 37px; display: flex; align-items: center; font-size: 21px; position: relative; }
+  .tab svg { position: absolute; left: 8px; top: 8px; width: 22px; height: 22px; }
+  .tab.active {
+    background: var(--blue); color: #fff; font-weight: bold; font-size: 22px;
+    flex: 0 0 268px; padding-left: 39px; height: 39px;
+  }
+  .tab.active svg { left: 10px; top: 8px; }
+  .tab.cours { color: var(--pink); flex: 0 0 266px; padding-left: 39px; }
+  .tab.ress { color: var(--orange); flex: 1; padding-left: 46px; }
+  .tab.cours svg { left: 8px; }
+  .tab.ress svg { left: 14px; }
+
+  .shortcuts { display: flex; justify-content: flex-end; gap: 8px; padding-right: 21px; height: 28px; }
+  .shortcut {
+    background: #efefef; color: #0b5fa5; font-size: 15px; height: 27px;
+    display: flex; align-items: center; position: relative; border-radius: 0 0 3px 3px;
+  }
+  .shortcut svg { position: absolute; left: 7px; top: 4px; width: 19px; height: 19px; }
+  .shortcut.bus { width: 126px; padding-left: 28px; }
+  .shortcut.bull { width: 128px; padding-left: 29px; }
+
+  /* ---------- Content grid ---------- */
+  .content {
+    background: #f5f5f5; margin: 0 15px 0 4px;
+    padding: 15px 9px 26px 8px;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 9px; align-items: start;
+  }
+  .card { background: #fff; border: 1px solid #d9d9d9; padding: 8px 9px; }
+  .icon-box {
+    width: 30px; height: 30px; background: var(--blue); border-radius: 2px; flex: none;
+    display: flex; align-items: center; justify-content: center; color: #fff;
+  }
+  .icon-box svg { width: 22px; height: 22px; }
+  .card-title {
+    display: flex; align-items: center; gap: 5px; font-size: 20px; color: #222;
+    padding: 2px 0 8px; border-bottom: 1px solid #dcdcdc; height: 41px;
+  }
+
+  /* Column 1 */
+  .col1 { padding: 8px 10px 0 10px; height: 468px; }
+  .datebar {
+    background: var(--blue); color: #fff; height: 40px; display: flex; align-items: center;
+    padding: 0 8px 0 13px; position: relative;
+  }
+  .datebar .arrows { display: flex; gap: 16px; width: 60px; }
+  .tab.cours, .tab.ress, .datebar .arrows, .datebar .arrows svg { cursor: pointer; }
+  .datebar .arrows svg { width: 14px; height: 14px; fill: #fff; }
+  .datebar .txt { position: absolute; left: 0; right: 0; text-align: center; font-size: 14.5px; line-height: 16px; padding-left: 40px; pointer-events: none; }
+  .datebar .cal { margin-left: auto; width: 26px; height: 26px; }
+  .course {
+    border: 1px solid #1d5f9f; border-top: 2px solid var(--blue); border-radius: 2px; margin-top: 7px;
+    height: 38px; display: flex; align-items: center; padding: 0 4px; position: relative; background: #fff;
+  }
+  .course .times {
+    font-size: 10px; width: 36px; display: flex; flex-direction: column; justify-content: space-between;
+    height: 30px; margin-left: 1px; color: #333; padding-top: 2px;
+  }
+  .course .times span:last-child { margin-bottom: -1px; }
+  .course .info { margin-left: 4px; }
+  .course .title { font-weight: bold; font-size: 13px; line-height: 14px; }
+  .course .room { font-size: 9px; color: #666; margin-top: 9px; line-height: 9px; }
+  .course .hw-ic { position: absolute; right: 4px; bottom: 3px; width: 14px; height: 16px; }
+  .more { text-align: right; font-size: 14.5px; margin: 20px 0 0; height: 22px; }
+  .more a, .lnk a { display: inline-flex; align-items: center; gap: 5px; }
+  .chev { width: 10px; height: 12px; fill: none; stroke: #6db1e8; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .lnk { border-top: 2px solid #e4e4e4; height: 44px; display: flex; align-items: center; font-size: 14.5px; }
+  .lnk.first { margin-top: 3px; }
+  .dl { border-top: 2px solid #e4e4e4; padding-top: 11px; font-size: 14.5px; }
+  .dl a { display: inline-flex; align-items: center; gap: 4px; }
+  .dl .dli { width: 15px; height: 15px; fill: none; stroke: #0b6bbf; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .dl small { display: block; color: #555; font-size: 8.5px; font-weight: bold; line-height: 10px; }
+  .dl small:first-of-type { margin-top: 4px; }
+
+  /* Column 2 */
+  .col2 { height: 468px; padding: 9px; display: flex; flex-direction: column; overflow: hidden; }
+  .col2 .msg { font-size: 15px; line-height: 17px; padding: 29px 3px 0 0; }
+  .col2 .msg-body { flex: 1; min-height: 0; overflow: hidden; }
+  .col2 .msg-body iframe { display: block; width: 100%; height: 100%; border: 0; margin-top: 6px; }
+  .col2 .card-title { flex: none; }
+  .secret-dot { width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; margin-left: 2px; }
+  .secret-dot::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #0b6bbf; }
+
+  /* Column 3 */
+  .stack { display: flex; flex-direction: column; gap: 17px; }
+  .result { height: 174px; padding: 9px; }
+  .grade { border-left: 3px solid var(--blue); padding-left: 10px; margin-top: 8px; height: 66px; position: relative; }
+  .grade .cat { font-size: 12.5px; color: #555; line-height: 14px; }
+  .grade .name { font-size: 14.5px; line-height: 17px; width: 130px; margin-top: 2px; color: #111; }
+  .grade .score { position: absolute; right: 0; top: 14px; font-weight: bold; font-size: 14px; }
+  .grade .score span { font-weight: normal; font-size: 12px; color: #444; }
+  .grade .date { font-size: 12.5px; color: #777; margin-top: 1px; line-height: 14px; }
+  .tip { font-style: italic; color: #666; font-size: 12.5px; line-height: 16px; margin-top: 21px; }
+  .tip svg { display: inline-block; width: 13px; height: 13px; vertical-align: -2px; margin-right: 2px; fill: none; stroke: #777; stroke-width: 1.4; }
+  .week { height: 277px; padding: 9px; position: relative; }
+  .voir { text-align: right; margin: 5px 0 0; font-size: 14.5px; height: 20px; }
+  .voir a { display: inline-flex; align-items: center; gap: 6px; }
+  .notice {
+    border: 2px solid #c18fd8; background: #fff; margin-top: 12px; height: 90px; position: relative;
+    padding: 14px 8px 0 37px; font-style: italic; color: #555; font-size: 12.5px; line-height: 15px;
+  }
+  .notice .bulb { position: absolute; left: 9px; top: 12px; width: 22px; height: 24px; fill: none; stroke: #a05cc0; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .notice .x { position: absolute; right: 7px; top: 5px; width: 9px; height: 9px; stroke: #222; stroke-width: 2; }
+  .notice .actions { font-style: normal; font-size: 12.5px; margin-top: 7px; color: #9a47bb; }
+  .notice .actions span { margin-right: 21px; }
+  .day { display: flex; align-items: center; margin-top: 21px; font-size: 14.5px; height: 25px; }
+  .day .pill {
+    height: 25px; width: 83px; border: 1px solid #c8c8c8; border-right: 0; background: #fff;
+    padding: 4px 0 0 4px; font-size: 13.5px;
+  }
+  .day .dt { margin-left: -3px; }
+  .hw { border-left: 3px solid var(--blue); padding-left: 9px; margin-top: 13px; position: relative; height: 34px; }
+  .hw .c { font-size: 12.5px; color: #555; line-height: 13px; }
+  .hw .t { font-size: 14.5px; margin-top: 2px; width: 168px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 16px; }
+  .hw .scan { position: absolute; left: 184px; top: 14px; width: 18px; height: 18px; background: var(--blue); border-radius: 2px; }
+  .hw .scan svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 1.4; }
+  .hw .fait { position: absolute; right: 8px; top: -3px; font-size: 11.5px; }
+  .hw .box { position: absolute; right: 8px; top: 13px; width: 16px; height: 16px; border: 1px solid #555; border-radius: 2px; background: #fff; }
+
+  /* ---------- Footer ---------- */
+  .school { background: #ebebeb; margin-top: 22px; height: 43px; padding: 6px 4px 0; }
+  .school b { display: block; font-size: 13px; line-height: 16px; color: #222; }
+  .school a { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; line-height: 16px; margin-top: 3px; }
+  .school a svg { width: 9px; height: 9px; fill: none; stroke: #0b6bbf; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-top: 2px; }
+  .help { background: #37424d; color: #fff; height: 69px; padding: 25px 8px 0; }
+  .help b { display: block; font-size: 14px; line-height: 16px; letter-spacing: .1px; }
+  .help .web { display: flex; align-items: center; gap: 4px; font-size: 14px; margin-top: 8px; }
+  .help .web svg { width: 13px; height: 13px; fill: none; stroke: #fff; stroke-width: 1.2; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-chev2" viewBox="0 0 10 12"><path d="M1 1l4 5-4 5M5 1l4 5-4 5"/></symbol>
+    <symbol id="i-chev1" viewBox="0 0 10 12"><path d="M3 1l4 5-4 5"/></symbol>
+  </defs>
+</svg>
+
+<div class="header">
+  <div class="brand">
+    <svg viewBox="0 0 24 28" fill="#fff" aria-hidden="true">
+      <rect x="0" y="6" width="9" height="9" rx="2.5"/>
+      <rect x="11" y="0" width="9" height="9" rx="2.5"/>
+      <rect x="11" y="11" width="9" height="9" rx="2.5"/>
+      <rect x="2" y="17" width="7" height="7" rx="2"/>
+      <rect x="20" y="22" width="4" height="4" rx="1.3"/>
+    </svg>
+    <div class="brand-text">
+      <div class="name"><b>mozaïk</b><span>portail</span></div>
+      <div class="role">Élève</div>
+    </div>
+  </div>
+  <div class="user">
+    <div class="lang">En</div>
+    <div class="username">Hariel <i>&#9660;</i></div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <div class="tab active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M3 13l3-8h12l3 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/>
+        <path d="M3 13h5l1.5 2.5h5L16 13h5"/>
+        <path d="M9 9h6"/>
+      </svg>
+      Ma vie scolaire
+    </div>
+    <div class="tab cours">
+      <svg viewBox="0 0 24 24" fill="#c8579f">
+        <rect x="2" y="5" width="5" height="16" rx="1"/>
+        <rect x="8.5" y="5" width="5" height="16" rx="1"/>
+        <rect x="15" y="6" width="5" height="16" rx="1" transform="rotate(-14 17.5 14)"/>
+        <rect x="2" y="2.5" width="5" height="2" rx=".6"/>
+        <rect x="8.5" y="2.5" width="5" height="2" rx=".6"/>
+      </svg>
+      Mes cours
+    </div>
+    <div class="tab ress">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#f5a53a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 20L14 10"/>
+        <path d="M14.5 3.5a4.5 4.5 0 0 0 4 6.3 4.5 4.5 0 0 0 2-.5l-3 1-2.5-2.5 1-3a4.5 4.5 0 0 0-1.5-1.3z"/>
+        <path d="M5 4l3 3M4 5l3 3M20 20L10 10"/>
+      </svg>
+      Ressources
+    </div>
+  </div>
+</div>
+
+<div class="shortcuts">
+  <div class="shortcut bus">
+    <svg viewBox="0 0 20 20"><rect width="20" height="20" rx="3" fill="#0b6bbf"/>
+      <rect x="4" y="4" width="12" height="9" rx="1.5" fill="#fff"/>
+      <rect x="5.2" y="5.2" width="9.6" height="3.4" fill="#0b6bbf"/>
+      <circle cx="6.8" cy="15" r="1.2" fill="#fff"/><circle cx="13.2" cy="15" r="1.2" fill="#fff"/></svg>
+    Autobus
+  </div>
+  <div class="shortcut bull">
+    <svg viewBox="0 0 20 20"><rect width="20" height="20" rx="3" fill="#0b6bbf"/>
+      <path d="M5 3.5h7l3 3V16.5H5z" fill="#fff"/>
+      <path d="M7 9h6M7 11.5h6M7 14h4" stroke="#0b6bbf" stroke-width="1"/></svg>
+    Bulletins
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- Column 1 -->
+  <div class="card col1">
+    <div class="datebar">
+      <div class="arrows">
+        <svg viewBox="0 0 14 14"><path d="M11 1L3 7l8 6z"/></svg>
+        <svg viewBox="0 0 14 14"><path d="M3 1l8 6-8 6z"/></svg>
+      </div>
+      <div class="txt"><span id="dateLine">Mercredi 14 oct.</span><br><span id="dayLine">Jour 4</span></div>
+      <svg class="cal" viewBox="0 0 26 26" fill="none" stroke="#fff">
+        <rect x="2" y="3.5" width="22" height="20" rx="2.5" stroke-width="2"/>
+        <path d="M2 8.5h22" stroke-width="2"/>
+        <path d="M7.5 1.5v4M18.5 1.5v4" stroke-width="2" stroke-linecap="round"/>
+        <g fill="#fff" stroke="none">
+          <rect x="5" y="11" width="2.5" height="2.5"/><rect x="9.5" y="11" width="2.5" height="2.5"/><rect x="14" y="11" width="2.5" height="2.5"/><rect x="18.5" y="11" width="2.5" height="2.5"/>
+          <rect x="5" y="15" width="2.5" height="2.5"/><rect x="9.5" y="15" width="2.5" height="2.5"/><rect x="14" y="15" width="2.5" height="2.5"/><rect x="18.5" y="15" width="2.5" height="2.5"/>
+          <rect x="5" y="19" width="2.5" height="2"/><rect x="9.5" y="19" width="2.5" height="2"/><rect x="14" y="19" width="2.5" height="2"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="course">
+      <div class="times"><span>09:30</span><span>10:45</span></div>
+      <div class="info"><div class="title">Français adapté</div><div class="room">Local C-304</div></div>
+    </div>
+    <div class="course">
+      <div class="times"><span>11:00</span><span>12:15</span></div>
+      <div class="info"><div class="title">Mathématique adapté</div><div class="room">Local C-304</div></div>
+    </div>
+    <div class="course">
+      <div class="times"><span>13:30</span><span>14:45</span></div>
+      <div class="info"><div class="title">Santé et bien-être</div><div class="room">Local F-106</div></div>
+    </div>
+    <div class="course">
+      <div class="times"><span>15:00</span><span>16:15</span></div>
+      <div class="info"><div class="title">Histoire</div><div class="room">Local C-304</div></div>
+      <svg class="hw-ic" viewBox="0 0 14 16" fill="none" stroke="#e8802a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="1" y="2.5" width="12" height="12.5" rx="1.5"/>
+        <path d="M4.5 1h5v3h-5z" fill="#fff"/>
+        <path d="M4 9.5l2.2 2.2L10.2 7.5"/>
+      </svg>
+    </div>
+
+    <div class="more"><a href="#">Voir en mode semaine <svg class="chev"><use href="#i-chev2"/></svg></a></div>
+    <div class="lnk first"><a href="#">Mes absences et retards <svg class="chev"><use href="#i-chev1"/></svg></a></div>
+    <div class="lnk"><a href="#">Mon plan d'aide <svg class="chev"><use href="#i-chev1"/></svg></a></div>
+    <div class="dl">
+      <a href="#">Télécharger l'horaire
+        <svg class="dli" viewBox="0 0 16 16"><path d="M8 2v8M4.5 7L8 10.5 11.5 7M2 11v3h12v-3"/></svg>
+      </a>
+      <small>Dernière mise à jour : 30 septembre 2026</small>
+      <small>Format : pdf | Taille : 23 Ko</small>
+    </div>
+  </div>
+
+  <!-- Column 2 -->
+  <div class="card col2">
+    <div class="card-title">
+      <div class="icon-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M5 4h13a1 1 0 0 1 1 1v14H6a1 1 0 0 1-1-1z"/>
+          <path d="M3 7l3-2M3 12l2-1"/>
+          <path d="M9 10l6-4 2 2.5-5 5-3 .8z" fill="#fff" stroke="none"/>
+        </svg>
+      </div>
+      Messages<span class="secret-dot" id="secretDot"></span>
+    </div>
+    <div class="msg-body" id="msgBody">
+      <div class="msg">Il n'y a aucun message à afficher pour le moment.</div>
+    </div>
+  </div>
+
+  <!-- Column 3 -->
+  <div class="stack">
+    <div class="card result">
+      <div class="card-title">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round">
+            <rect x="3.5" y="12" width="4" height="8"/>
+            <rect x="10" y="4" width="4" height="16"/>
+            <rect x="16.5" y="8" width="4" height="12"/>
+          </svg>
+        </div>
+        Dernier résultat
+      </div>
+      <div class="grade">
+        <div class="cat">Français</div>
+        <div class="name">Questions sur le roman - Oscar et la dame rose</div>
+        <div class="score">60<span>/100</span></div>
+        <div class="date">23 septembre</div>
+      </div>
+      <div class="tip">
+        <svg viewBox="0 0 16 16" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.5a4.2 4.2 0 0 0-2.4 7.6c.5.4.7.8.7 1.4h3.4c0-.6.2-1 .7-1.4A4.2 4.2 0 0 0 8 1.5zM6.3 12.5h3.4M6.8 14.2h2.4"/></svg>
+        Pour voir plus de résultats, consulte la section Mes cours.
+      </div>
+    </div>
+
+    <div class="card week">
+      <div class="card-title">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+            <circle cx="12" cy="6.5" r="3.2"/>
+            <path d="M4.5 21v-3.5a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3V21z"/>
+            <path d="M9.5 14.5l2.5 3 2.5-3"/>
+          </svg>
+        </div>
+        Travaux de la semaine
+      </div>
+      <div class="voir"><a href="#">Voir tout <svg class="chev"><use href="#i-chev2"/></svg></a></div>
+      <div class="notice">
+        <svg class="bulb" viewBox="0 0 22 24"><path d="M11 2a6.5 6.5 0 0 0-3.7 11.8c.8.6 1.2 1.2 1.2 2.2h5c0-1 .4-1.6 1.2-2.2A6.5 6.5 0 0 0 11 2zM8.5 18.5h5M9.2 21h3.6"/></svg>
+        <svg class="x" viewBox="0 0 9 9" stroke-linecap="round"><path d="M1 1l7 7M8 1L1 8"/></svg>
+        Pour voir les travaux des autres semaines, clique sur « Voir tout ».
+        <div class="actions"><span>Ne plus afficher</span><span>Fermer</span></div>
+      </div>
+      <div class="day"><div class="pill">Vendredi</div><div class="dt">16 octobre</div></div>
+      <div class="hw">
+        <div class="c">Mathématique</div>
+        <div class="t">Chapitre 2 - Document d'accompagnement</div>
+        <div class="scan">
+          <svg viewBox="0 0 18 18" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6V3h3M12 3h3v3M15 12v3h-3M6 15H3v-3"/><rect x="6" y="6" width="6" height="6"/></svg>
+        </div>
+        <div class="fait">Fait</div>
+        <div class="box"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="school">
+  <b>École secondaire Jean-Baptiste-Meilleur</b>
+  <a href="#">Nous joindre <svg viewBox="0 0 10 10"><path d="M1.5 3L5 6.5 8.5 3"/></svg></a>
+</div>
+<div class="help">
+  <b>BESOIN D'AIDE ?</b>
+  <div class="web">
+    <svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="6"/><ellipse cx="7" cy="7" rx="2.6" ry="6"/><path d="M1 7h12M2 4h10M2 10h10"/></svg>
+    Info.mozaikportail
+  </div>
+</div>
+
+<script>
+(function () {
+  /* ---- Date en temps réel ---- */
+  var JOURS = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  var MOIS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+  var CYCLE = 9; // nombre de jours du cycle scolaire
+  var REF = new Date(2026, 9, 14); // 14 oct. 2026 = Jour 4
+  var REF_JOUR = 4;
+
+  function weekdaysBetween(a, b) {
+    // nombre de jours ouvrables (lun-ven) entre a et b (b > a ou b < a)
+    var step = b >= a ? 1 : -1, n = 0, d = new Date(a);
+    while (d.getTime() !== b.getTime()) {
+      d.setDate(d.getDate() + step);
+      var w = d.getDay();
+      if (w !== 0 && w !== 6) n += step;
+    }
+    return n;
+  }
+
+  function updateDate() {
+    var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    document.getElementById('dateLine').textContent =
+      JOURS[today.getDay()] + ' ' + today.getDate() + ' ' + MOIS[today.getMonth()];
+    var w = today.getDay(), el = document.getElementById('dayLine');
+    if (w === 0 || w === 6) { el.textContent = 'Congé'; return; }
+    var n = weekdaysBetween(REF, today);
+    var jour = (((REF_JOUR - 1 + n) % CYCLE) + CYCLE) % CYCLE + 1;
+    el.textContent = 'Jour ' + jour;
+  }
+  updateDate();
+  setInterval(updateDate, 1000);
+
+  /* ---- Redirections vers mozaikportail.ca ---- */
+  var PORTAL = 'https://mozaikportail.ca/';
+  function goPortal() {
+    var w = window.open(PORTAL, '_blank', 'noopener');
+    if (!w) { window.location.href = PORTAL; }
+  }
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('.tab.cours, .tab.ress, .datebar .arrows')) {
+      e.preventDefault();
+      goPortal();
+    }
+  });
+
+  /* ---- Point secret / salle ---- */
+  var body = document.getElementById('msgBody');
+  var ROOM = 'https://organizations.minnit.chat/768163131580068/Main';
+  var original = body.innerHTML;
+  var open = false;
+
+  function openRoom() {
+    if (open) return;
+    open = true;
+    body.innerHTML = '';
+    var f = document.createElement('iframe');
+    f.src = ROOM;
+    f.setAttribute('allow', 'camera; microphone; clipboard-write');
+    body.appendChild(f);
+  }
+  function closeRoom() {
+    if (!open) return;
+    open = false;
+    body.innerHTML = original;
+  }
+  document.getElementById('secretDot').addEventListener('click', openRoom);
+
+  /* ---- 3 x L en 1 seconde = fermer ---- */
+  var presses = [];
+  function onKey(e) {
+    if (e.repeat || !e.key || e.key.toLowerCase() !== 'l') return;
+    var t = Date.now();
+    presses.push(t);
+    presses = presses.filter(function (x) { return t - x <= 1000; });
+    if (presses.length >= 3) { presses = []; closeRoom(); }
+  }
+  window.addEventListener('keydown', onKey, true);
+  document.addEventListener('keydown', onKey, true);
+
+  /* Une iframe externe capte le clavier quand elle a le focus.
+     On rend le focus \u00e0 la page quand la souris sort de la zone de la salle. */
+  function giveFocusBack() {
+    if (document.activeElement && document.activeElement.tagName === 'IFRAME') {
+      document.activeElement.blur();
+    }
+    window.focus();
+    document.body.setAttribute('tabindex', '-1');
+    document.body.focus();
+  }
+  body.addEventListener('mouseleave', function () { if (open) giveFocusBack(); });
+  window.addEventListener('blur', function () {
+    // si le focus est pass\u00e9 \u00e0 l'iframe, on le reprend d\u00e8s que la souris est dehors
+    setTimeout(function () { if (open && !body.matches(':hover')) giveFocusBack(); }, 0);
+  });
+  document.addEventListener('mousedown', function (e) {
+    if (open && !body.contains(e.target)) giveFocusBack();
+  });
+})();
+</script>
+
+</body>
+</html>
